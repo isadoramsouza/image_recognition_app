@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
-import 'detector_painters.dart';
 import 'utils.dart';
 
 void main() => runApp(MaterialApp(home: _MyHomePage()));
+enum Detector { label, cloudLabel }
 
 class _MyHomePage extends StatefulWidget {
   @override
@@ -19,6 +19,9 @@ class _MyHomePageState extends State<_MyHomePage> {
   CameraController _camera;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String text = "";
+  String text2 = "";
+  String text3 = "";
+  String acc1 = "";
   GoogleTranslator translator = GoogleTranslator();
 
   Detector _currentDetector = Detector.label;
@@ -97,9 +100,8 @@ class _MyHomePageState extends State<_MyHomePage> {
     switch (_currentDetector) {
       case Detector.label:
         if (_scanResults is! List<Label>) return noResultsText;
-
+        // painter = LabelDetectorPainter(imageSize, _scanResults);
         detectLabels().then((_) {});
-
         break;
       default:
         assert(_currentDetector == Detector.cloudLabel);
@@ -113,7 +115,10 @@ class _MyHomePageState extends State<_MyHomePage> {
 
   Future<void> detectLabels() async {
     text = _scanResults[0].label;
-    print(text);
+    if (_scanResults[1].label != null || !_scanResults[1].label.equals(""))
+      text2 = _scanResults[1].label;
+    if (_scanResults[2].label != null || !_scanResults[2].label.equals(""))
+      text3 = _scanResults[2].label;
   }
 
   Widget _buildImage() {
@@ -121,12 +126,8 @@ class _MyHomePageState extends State<_MyHomePage> {
       constraints: const BoxConstraints.expand(),
       child: _camera == null
           ? const Center(
-              child: Text(
-                'Inicializando Camera...',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 30.0,
-                ),
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.lightBlue,
               ),
             )
           : Stack(
@@ -176,8 +177,8 @@ class _MyHomePageState extends State<_MyHomePage> {
             ),
           ),
           Text(
-            text,
-            textAlign: TextAlign.left,
+            text + '\n' + text2 + '\n' + text3,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
           ),
