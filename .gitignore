@@ -35,6 +35,7 @@
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/app/google-services.json
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -69,12 +70,3 @@
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-# iOS
-.DS_Store
-Pods/
-Podfile.lock
-xcuserdata/
-*.xcworkspace/
-
-# Android
-google-services.json
